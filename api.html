@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title> API Buscar Películas y Series</title>
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<style>
+    /* Estilo img del api */
+img {
+    width: 100%;
+    border-radius: 10px;
+}
+</style>
+
+    <nav>
+        <ul>
+            <li><a href="index.html">Inicio</a></li>
+            <li><a href="crud.html">CRUD Peliculas</a></li>
+            <li><a href="api.html">API Peliculas</a></li>
+        </ul>
+    </nav>
+
+    <h1>Buscar Películas y Series</h1>
+    <p>Busca la informacion de tu pelicula o serie favorita.</p>
+
+    <input type="text" id="searchInput" placeholder="Ingresa el título">
+    <button onclick="buscarPelicula()">Buscar</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        async function buscarPelicula() {
+            const titulo = document.getElementById('searchInput').value;
+            const apiKey = 'bbd5b4e7';
+            const url = `https://www.omdbapi.com/?t=${encodeURIComponent(titulo)}&apikey=${apiKey}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (data.Response === 'True') {
+                    document.getElementById('resultado').innerHTML = `
+                        <div class="movie-card">
+                            <h2>${data.Title} (${data.Year})</h2>
+                            <img src="${data.Poster !== 'N/A' ? data.Poster : 'https://via.placeholder.com/300x445?text=No+Image'}" alt="Poster">
+                            <p><strong>Tipo:</strong> ${data.Type}</p>
+                            <p><strong>Género:</strong> ${data.Genre}</p>
+                            <p><strong>Duración:</strong> ${data.Runtime}</p>
+                            <p><strong>Director:</strong> ${data.Director}</p>
+                            <p><strong>Actores:</strong> ${data.Actors}</p>
+                            <p><strong>Trama:</strong> ${data.Plot}</p>
+                            <p><strong>Calificación IMDb:</strong> ${data.imdbRating}</p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('resultado').innerHTML = `<p>No se encontró la película o serie.</p>`;
+                }
+            } catch (error) {
+                console.error('Error al obtener datos:', error);
+                document.getElementById('resultado').innerHTML = `<p>Ocurrió un error al buscar. Intenta de nuevo.</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
