@@ -15,8 +15,9 @@
         </ul>
     </nav>
 
-    <h1>CRUD de Películas y Series</h1>
+    <h1>🎬🍿CRUD de Películas y Series🎬🍿</h1>
     <p>A continuación vas a poder agregar una nueva pelicula o serie.</p>
+    <p>Luego de agregarla la vas a poder editar, eliminar o cambiar de estado.</p>
 
     <!-- Entradas para agregar nueva película -->
     <input type="text" id="nombrePelicula" placeholder="Nombre de la película">
@@ -27,76 +28,69 @@
     <div id="crudLista"></div>
 
     <script>
-        // Lista (arreglo) donde se guardarán las películas
-        let peliculas = [];
+    let peliculas = [];
 
-        // Función para mostrar las películas en pantalla
-        function renderPeliculas() {
-            const lista = document.getElementById('crudLista');
-            lista.innerHTML = ''; // Limpiar contenido previo
+    function renderPeliculas() {
+        const lista = document.getElementById('crudLista');
+        lista.innerHTML = '';
 
-            // Recorrer cada película en el arreglo
-            peliculas.forEach((pelicula, index) => {
-                // Crear un contenedor para cada tarjeta de película
-                const card = document.createElement('div');
-                card.className = 'movie-card'; // Clase CSS para estilos
+        peliculas.forEach((pelicula, index) => {
+            const card = document.createElement('div');
+            card.className = 'movie-card';
 
-                // Contenido HTML de la tarjeta
-                card.innerHTML = `
-                    <h3>${pelicula.nombre}</h3>
-                    <p><strong>Año:</strong> ${pelicula.anio}</p>
-                    <button onclick="editarPelicula(${index})">Editar</button>
-                    <button onclick="eliminarPelicula(${index})">Eliminar</button>
-                `;
+            card.innerHTML = `
+                <h3>${pelicula.nombre}</h3>
+                <p><strong>Año:</strong> ${pelicula.anio}</p>
+                <p><strong>Estado:</strong> ${pelicula.estado}</p>
+                <button onclick="cambiarEstado(${index})">Cambiar estado</button>
+                <button onclick="editarPelicula(${index})">Editar</button>
+                <button onclick="eliminarPelicula(${index})">Eliminar</button>
+            `;
 
-                // Agregar la tarjeta al contenedor principal
-                lista.appendChild(card);
-            });
-        }
-
-        // Evento al hacer clic en el botón "Agregar"
-        document.getElementById('agregarPelicula').addEventListener('click', () => {
-            // Obtener los valores de los campos de entrada
-            const nombreInput = document.getElementById('nombrePelicula');
-            const anioInput = document.getElementById('anioPelicula');
-            const nombre = nombreInput.value.trim();
-            const anio = anioInput.value.trim();
-
-            // Validar que ambos campos estén completos
-            if (nombre && anio) {
-                // Agregar la nueva película al arreglo
-                peliculas.push({ nombre, anio });
-
-                // Limpiar los campos de entrada
-                nombreInput.value = '';
-                anioInput.value = '';
-
-                // Actualizar la lista en pantalla
-                renderPeliculas();
-            } else {
-                alert('Por favor ingresa ambos campos (nombre y año)');
-            }
+            lista.appendChild(card);
         });
+    }
 
-        // Función para eliminar una película
-        function eliminarPelicula(index) {
-            if (confirm(`¿Estás seguro de eliminar "${peliculas[index].nombre}"?`)) {
-                peliculas.splice(index, 1); // Quitar del arreglo
-                renderPeliculas(); // Actualizar pantalla
-            }
+    document.getElementById('agregarPelicula').addEventListener('click', () => {
+        const nombreInput = document.getElementById('nombrePelicula');
+        const anioInput = document.getElementById('anioPelicula');
+        const nombre = nombreInput.value.trim();
+        const anio = anioInput.value.trim();
+
+        if (nombre && anio) {
+            // Se agrega con estado "No vista"
+            peliculas.push({ nombre, anio, estado: 'No vista' });
+            nombreInput.value = '';
+            anioInput.value = '';
+            renderPeliculas();
+        } else {
+            alert('Por favor ingresa ambos campos (nombre y año)');
         }
+    });
 
-        // Función para editar una película
-        function editarPelicula(index) {
-            const nuevoNombre = prompt('Editar nombre de la película:', peliculas[index].nombre);
-            const nuevoAnio = prompt('Editar año de la película:', peliculas[index].anio);
-
-            // Validar que se ingresaron nuevos valores
-            if (nuevoNombre && nuevoAnio) {
-                peliculas[index] = { nombre: nuevoNombre, anio: nuevoAnio }; // Actualizar valores
-                renderPeliculas(); // Actualizar pantalla
-            }
+    function eliminarPelicula(index) {
+        if (confirm(`¿Estás seguro de eliminar "${peliculas[index].nombre}"?`)) {
+            peliculas.splice(index, 1);
+            renderPeliculas();
         }
+    }
+
+    function editarPelicula(index) {
+        const nuevoNombre = prompt('Editar nombre de la película:', peliculas[index].nombre);
+        const nuevoAnio = prompt('Editar año de la película:', peliculas[index].anio);
+
+        if (nuevoNombre && nuevoAnio) {
+            peliculas[index].nombre = nuevoNombre;
+            peliculas[index].anio = nuevoAnio;
+            renderPeliculas();
+        }
+    }
+
+    function cambiarEstado(index) {
+        peliculas[index].estado = (peliculas[index].estado === 'Vista') ? 'No vista' : 'Vista';
+        renderPeliculas();
+    }
+
     </script>
 </body>
 </html>
