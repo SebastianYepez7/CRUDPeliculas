@@ -19,12 +19,12 @@
     <p>A continuación vas a poder agregar una nueva pelicula o serie.</p>
     <p>Luego de agregarla la vas a poder editar, eliminar o cambiar de estado.</p>
 
-    <!-- Entradas para agregar nueva película -->
+    <!-- Entradas para agregar nueva pelicula -->
     <input type="text" id="nombrePelicula" placeholder="Nombre de la película">
     <input type="text" id="anioPelicula" placeholder="Año de estreno">
     <button id="agregarPelicula">Agregar</button>
 
-    <!-- Contenedor donde se mostrará la lista de películas -->
+    <!-- Contenedor donde se muestra la lista de peliculas -->
     <div id="crudLista"></div>
 
     <script>
@@ -58,7 +58,7 @@
         const anio = anioInput.value.trim();
 
         if (nombre && anio) {
-            // Se agrega con estado "No vista"
+
             peliculas.push({ nombre, anio, estado: 'No vista' });
             nombreInput.value = '';
             anioInput.value = '';
